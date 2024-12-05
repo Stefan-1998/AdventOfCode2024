@@ -8,8 +8,8 @@ public class Day2Tests
     {
         Assert.That(Day2Logic.Part1(Path.GetFullPath(input)), Is.EqualTo(totalDistanceSolution));
     }
-    [TestCase("ExampleInput.txt", 31)]
-    [TestCase("Input.txt", 22545250)]
+    [TestCase("ExampleInput.txt", 4)]
+    [TestCase("Input.txt", 296)]
     public void Part2_Test(string input, int similarityScore)
     {
         Assert.That(Day2Logic.Part2(Path.GetFullPath(input)), Is.EqualTo(similarityScore));

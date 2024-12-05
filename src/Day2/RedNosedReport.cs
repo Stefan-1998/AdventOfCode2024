@@ -24,7 +24,31 @@ static public class Day2Logic
     static public int Part2(string inputFilePath)
     {
         var reports = ReadOutInputFile(inputFilePath);
-        return 0;
+        int amountOfSafeReports = 0;
+        foreach (string report in reports)
+        {
+            var levels = ParseLevels(report);
+
+            if (IsSafeReport(levels))
+            {
+                amountOfSafeReports++;
+            }
+            else
+            {
+                for (int i = 0; i < levels.Count; i++)
+                {
+                    var shortendLevels = levels.ToList();
+                    shortendLevels.RemoveAt(i);
+                    if (IsSafeReport(shortendLevels.ToList()))
+                    {
+                        amountOfSafeReports++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return amountOfSafeReports;
     }
 
     static List<int> ParseLevels(string report)
@@ -39,6 +63,7 @@ static public class Day2Logic
     }
     static private bool IsSafeReport(List<int> levels)
     {
+        if (levels.Count == 1) { return true; }
         if (!(HasOnlyIncreasingLevels(levels) || HasOnlyDecreasingLevels(levels)))
         {
             return false;
@@ -49,13 +74,14 @@ static public class Day2Logic
         }
         return false;
     }
-
     static private bool HasOnlyIncreasingLevels(List<int> levels)
     {
         for (int i = 0; i < levels.Count - 1; i++)
         {
-            if (levels[i] > levels[i + 1])
+            if (levels[i] >= levels[i + 1])
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -63,8 +89,10 @@ static public class Day2Logic
     {
         for (int i = 0; i < levels.Count - 1; i++)
         {
-            if (levels[i] < levels[i + 1])
+            if (levels[i] <= levels[i + 1])
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -72,8 +100,10 @@ static public class Day2Logic
     {
         for (int i = 0; i < levels.Count - 1; i++)
         {
-            if (Math.Abs(levels[i] - levels[i + 1]) < 1)
-            { return false; }
+            if (Math.Abs(levels[i] - levels[i + 1]) == 0)
+            {
+                return false;
+            }
         }
         return true;
     }
@@ -83,8 +113,11 @@ static public class Day2Logic
         for (int i = 0; i < levels.Count - 1; i++)
         {
             if (Math.Abs(levels[i] - levels[i + 1]) > 3)
-            { return false; }
+            {
+                return false;
+            }
         }
         return true;
     }
 }
+
