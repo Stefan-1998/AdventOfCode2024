@@ -9,7 +9,7 @@ public class Day4Tests
         Assert.That(new Day4Logic().Part1(Path.GetFullPath(input)), Is.EqualTo(multiplicationSum));
     }
     [TestCase("ExampleInputPart2.txt", "9")]
-    [TestCase("Input.txt", "104083373")]
+    [TestCase("Input.txt", "1890")]
     public void Part2_Test(string input, string multiplicationSum)
     {
         Assert.That(new Day4Logic().Part2(Path.GetFullPath(input)), Is.EqualTo(multiplicationSum));

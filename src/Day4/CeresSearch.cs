@@ -8,7 +8,6 @@ public class Day4Logic
 {
     private int wordSearchWidth;
     private int wordSearchHeigth;
-    private List<(int X, int Y)> xLetterPositions = new();
 
     private List<string> wordSearchPuzzle = new();
     public string Part1(string inputFilePath)
@@ -17,7 +16,7 @@ public class Day4Logic
         wordSearchHeigth = wordSearchPuzzle.Count;
         wordSearchWidth = wordSearchPuzzle[0].Length;
 
-        FilterOutXLetterPositions();
+        var xLetterPositions = FilterOutXLetterPositions('X');
 
         int foundXmasStrings = 0;
         foreach (var foundX in xLetterPositions)
@@ -28,23 +27,70 @@ public class Day4Logic
     }
     public string Part2(string inputFilePath)
     {
-        var corruptedInstructionsLines = ReadOutInputFile(inputFilePath).ToList();
-        return String.Empty;
+        wordSearchPuzzle = ReadOutInputFile(inputFilePath).ToList();
+        wordSearchHeigth = wordSearchPuzzle.Count;
+        wordSearchWidth = wordSearchPuzzle[0].Length;
+
+        int amountOfMasInXForm = 0;
+        var aLetterPositions = FilterOutXLetterPositions('A');
+        foreach (var foundA in aLetterPositions)
+        {
+            if (IsMasInXForm(foundA.X, foundA.Y)) { amountOfMasInXForm++; }
+        }
+
+        return amountOfMasInXForm.ToString();
     }
 
-    private void FilterOutXLetterPositions()
+    private List<(int X, int Y)> FilterOutXLetterPositions(char letterToFind)
     {
+        var foundLetters = new List<(int, int)>();
         for (int i = 0; i < wordSearchPuzzle.Count; i++)
         {
             for (int j = 0; j < wordSearchPuzzle[i].Length; j++)
             {
-                if (wordSearchPuzzle[i][j] == 'X')
+                if (wordSearchPuzzle[i][j] == letterToFind)
                 {
-                    xLetterPositions.Add((j, i));
+                    foundLetters.Add((j, i));
                 }
             }
         }
+        return foundLetters;
+    }
 
+    private bool IsMasInXForm(int x, int y)
+    {
+        if (IsXOutofBounds(x, y)) { return false; }
+        if (HasXOrAInDiagonal(x, y)) { return false; }
+
+        return HasCorrectDiagonalArms(x, y);
+    }
+    private bool HasCorrectDiagonalArms(int x, int y)
+    {
+        if (wordSearchPuzzle[y + 1][x + 1] == wordSearchPuzzle[y - 1][x - 1]) { return false; }
+        if (wordSearchPuzzle[y - 1][x + 1] == wordSearchPuzzle[y + 1][x - 1]) { return false; }
+        return true;
+
+    }
+    private bool IsXOutofBounds(int x, int y)
+    {
+        if (x - 1 < 0) { return true; }
+        if (x + 1 >= wordSearchWidth) { return true; }
+        if (y - 1 < 0) { return true; }
+        if (y + 1 >= wordSearchHeigth) { return true; }
+        return false;
+    }
+
+    private bool HasXOrAInDiagonal(int x, int y)
+    {
+        if (wordSearchPuzzle[y + 1][x + 1] == 'X') { return true; }
+        if (wordSearchPuzzle[y - 1][x - 1] == 'X') { return true; }
+        if (wordSearchPuzzle[y - 1][x + 1] == 'X') { return true; }
+        if (wordSearchPuzzle[y + 1][x - 1] == 'X') { return true; }
+        if (wordSearchPuzzle[y + 1][x + 1] == 'A') { return true; }
+        if (wordSearchPuzzle[y - 1][x - 1] == 'A') { return true; }
+        if (wordSearchPuzzle[y - 1][x + 1] == 'A') { return true; }
+        if (wordSearchPuzzle[y + 1][x - 1] == 'A') { return true; }
+        return false;
     }
 
 
