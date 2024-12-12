@@ -32,18 +32,32 @@ public class Day5Logic
         {
             if (line.Contains('|') || String.IsNullOrEmpty(line)) { continue; }
             var pageNumbers = line.Split(',').ToList();
-            if (!HasCorrectPageOrder(pageNumbers)) { }
+            if (!HasCorrectPageOrder(pageNumbers))
+            {
+                sumOfMiddleNumbersOfCorrectPages += GetMiddleNumberOfSortedList(pageNumbers);
+            }
         }
         return sumOfMiddleNumbersOfCorrectPages.ToString();
     }
 
-    private string GetMiddleNumberOfSortedList(List<string> unorderPageNumbers)
+    private int GetMiddleNumberOfSortedList(List<string> unorderPageNumbers)
     {
         while (!HasCorrectPageOrder(unorderPageNumbers))
         {
 
+            for (int i = unorderPageNumbers.Count - 1; i >= 0; i--)
+            {
+                if (!pageOrderRules.ContainsKey(unorderPageNumbers[i])) { continue; }
+                var followingNumbersAfterRules = pageOrderRules[unorderPageNumbers[i]];
+                if (unorderPageNumbers.Take(i).Intersect(followingNumbersAfterRules).Any())
+                {
+                    var item = unorderPageNumbers[i];
+                    unorderPageNumbers.RemoveAt(i);
+                    unorderPageNumbers.Insert(i - 1, item);
+                }
+            }
         }
-        return unorderPageNumbers[unorderPageNumbers.Count / 2];
+        return Int32.Parse(unorderPageNumbers[unorderPageNumbers.Count / 2]);
     }
 
     private void ParsePageOrderRules(List<string> rawOrderRules)

@@ -8,8 +8,8 @@ public class Day5Tests
     {
         Assert.That(new Day5Logic().Part1(Path.GetFullPath(input)), Is.EqualTo(sumOfMiddleNumbers));
     }
-    [TestCase("ExampleInputPart2.txt", "9")]
-    [TestCase("Input.txt", "1890")]
+    [TestCase("ExampleInput.txt", "123")]
+    [TestCase("Input.txt", "5479")]
     public void Part2_Test(string input, string multiplicationSum)
     {
         Assert.That(new Day5Logic().Part2(Path.GetFullPath(input)), Is.EqualTo(multiplicationSum));
