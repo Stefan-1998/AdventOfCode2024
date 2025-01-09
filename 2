@@ -1,0 +1,70 @@
+﻿
+namespace Day7;
+
+public class Day7Logic
+{
+    public string Part1(string inputFilePath)
+    {
+        var input = ReadOutInputFile(inputFilePath);
+        var parsedInput = input.Select(line => ParseInput(line));
+
+        long totalCalibrationResults = 0;
+        foreach (var calibration in parsedInput)
+        {
+            if (HasCorrectOddEvenParity(calibration.Result, calibration.Terms))
+            {
+                continue;
+            }
+            if (IsCorrectCalibration(calibration.Result, new Queue<int>(calibration.Terms), 0))
+            {
+                totalCalibrationResults += calibration.Result;
+            }
+        }
+        return totalCalibrationResults.ToString();
+    }
+    public string Part2(string inputFilePath)
+    {
+        return String.Empty;
+    }
+
+    private bool IsCorrectCalibration(int result, Queue<int> Terms, int currentSum)
+    {
+        if (currentSum > result) { return false; }
+        if (currentSum == result) { return true; }
+
+        if (Terms.Count == 0) { return false; }
+
+        int item = Terms.Dequeue();
+        //Add
+        if (IsCorrectCalibration(result, Terms, currentSum + item)) { return true; }
+
+        //Multiply
+        return IsCorrectCalibration(result, Terms, currentSum * item);
+    }
+
+    private List<string> ReadOutInputFile(string inputFilePath)
+    {
+        string resolvedPath = Path.GetFullPath(inputFilePath);
+        if (!Path.Exists(resolvedPath)) { throw new FileNotFoundException($"The file {resolvedPath} does not exists! It could not be loaded!."); }
+        return File.ReadLines(resolvedPath).ToList();
+    }
+    private (int Result, List<int> Terms) ParseInput(string inputLine)
+    {
+        int result = Int32.Parse(inputLine.Split(':')[0]);
+        List<int> terms = inputLine.Split(": ")[1].Split(' ').Select(number => Int32.Parse(number)).ToList();
+        return (Result: result, Terms: terms);
+    }
+
+    private bool HasCorrectOddEvenParity(int result, List<int> Terms)
+    {
+        bool resultIsOdd = int.IsOddInteger(result);
+        int oddNumberCounter = 0;
+        foreach (var term in Terms)
+        {
+            if (int.IsOddInteger(term))
+                oddNumberCounter++;
+        }
+        return int.IsOddInteger(oddNumberCounter) == resultIsOdd;
+    }
+}
+
