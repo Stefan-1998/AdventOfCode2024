@@ -10,10 +10,10 @@ public class Day7Tests
     {
         Assert.That(new Day7Logic().Part1(Path.GetFullPath(input)), Is.EqualTo(totalCelibrationResult));
     }
-    /*[TestCase("ExampleInput.txt", "123")]
+    [TestCase("ExampleInput.txt", "11387")]
     [TestCase("Input.txt", "5479")]
-    public void Part2_Test(string input, string multiplicationSum)
+    public void Part2_Test(string input, string totalCelibrationResult)
     {
-        Assert.That(new Day7Logic().Part2(Path.GetFullPath(input)), Is.EqualTo(multiplicationSum));
-    }*/
+        Assert.That(new Day7Logic().Part2(Path.GetFullPath(input)), Is.EqualTo(totalCelibrationResult));
+    }
 }
