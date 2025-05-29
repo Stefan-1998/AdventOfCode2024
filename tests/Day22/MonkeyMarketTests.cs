@@ -4,8 +4,8 @@ namespace Day22.Tests;
 
 public class Day22Tests
 {
-    [TestCase("ExampleInput.txt", "3749")]
-    [TestCase("Input.txt", "4998764814652")]
+    [TestCase("ExampleInput.txt", "37327623")]
+    [TestCase("Input.txt", "20401393616")]
     public void Part1_Test(string input, string totalCelibrationResult)
     {
         Assert.That(new Day22Logic().Part1(Path.GetFullPath(input)), Is.EqualTo(totalCelibrationResult));
